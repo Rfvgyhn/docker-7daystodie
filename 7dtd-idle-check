@@ -1,0 +1,9 @@
+#!/bin/bash
+
+now=$(date +"%Y-%m-%d %T")
+echo "Idle Check - $now"
+players=$(echo "listplayerids" | nc -q 1 -C 127.0.0.1 8081 2>&1)
+
+if ! echo "$players" | grep -q "Connection refused\|NullReferenceException" && ! echo "$players" | grep -q "Total of [1-9]"; then
+  /usr/local/bin/7dtd-shutdown
+fi
